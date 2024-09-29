@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Feedback</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'feedback.css' %}">
+</head>
+<body>
+    <div class="feedback-form">
+        <h1>Geef ons uw feedback</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Verstuur</button>
+        </form>
+    </div>
+</body>
+</html>

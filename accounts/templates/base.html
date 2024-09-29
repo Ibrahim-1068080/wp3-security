@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        .navbar {
+            background-color: darkblue;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar-logo {
+            margin-right: 30px;
+            height: 120px;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 30px;
+            text-decoration: none;
+            font-size: 21px;
+        }
+        .navbar a:hover {
+            background-color: darkblue;
+            color: darkgrey;
+        }
+        .admin-button {
+            display: none;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .user-is-admin .admin-button {
+                display: block;
+            }
+        }
+        .footer {
+            background-color: darkblue;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        #spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: darkblue;
+            z-index: 1000;
+        }
+
+        #message {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            font-size: 1em;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        #message.success {
+            border-color: green;
+            color: green;
+        }
+
+        #message.error {
+            border-color: red;
+            color: red;
+        }
+        .color-picker {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        .color-picker label {
+            margin-right: 10px;
+            color: #fff;
+        }
+        .color-picker input {
+            border: none;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'images/accc.png' %}" alt="logo" class="navbar-logo">
+    </a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Uitloggen</a>
+        {% if user.organisatie or user.is_staff %}
+            <a href="{% url 'genereer_api_key' %}">API</a>
+            <a class="navbar-brand" href="{% url 'create_onderzoek' %}">Onderzoek aanmaken</a>
+        {% endif %}
+        {% if user.organisatie %}
+            <a href="{% url 'organisatie_profiel' %}">MijnProfiel</a>
+        {% endif %}
+        {% if not user.is_staff and not user.organisatie %}
+            <a href="{% url 'ervaringdeskundige_profiel' %}">MijnProfiel</a>
+        {% endif %}
+        {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}" class="admin-button">Admin</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'login' %}">Inloggen</a>
+        <a href="{% url 'register' %}">Registreer als ervaringdeskundige</a>
+    {% endif %}
+    <a href="{% url 'onderzoek_create' %}">Onderzoek api</a>
+    <a href="{% url 'onderzoek_list' %}">Onderzoeken weergeven</a>
+    {% if not user.organisatie and not user.is_staff %}
+        <a href="{% url 'organisatie_register' %}">registreer als Organisatie</a>
+    {% endif %}
+    <div class="color-picker">
+        <label for="colorPicker">Kies achtergrondkleur:</label>
+        <input type="color" id="colorPicker">
+    </div>
+</div>
+<div style="padding:20px">
+    {% block content %}
+    {% endblock %}
+</div>
+<div class="footer">
+    <p>&copy; 2024</div>
+<div id="spinner" style="display: none;">
+    <i class="fas fa-spinner fa-spin"></i>
+</div>
+<div id="message" style="display: none;"></div>
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=SXAnM8Gb"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const spinner = document.getElementById('spinner');
+        const message = document.getElementById('message');
+        const colorPicker = document.getElementById('colorPicker');
+
+        const savedColor = localStorage.getItem('backgroundColor');
+        if (savedColor) {
+            document.body.style.backgroundColor = savedColor;
+            colorPicker.value = savedColor;
+        }
+
+        colorPicker.addEventListener('input', function() {
+            const selectedColor = colorPicker.value;
+            document.body.style.backgroundColor = selectedColor;
+            localStorage.setItem('backgroundColor', selectedColor);
+        });
+
+        const form = document.getElementById('registrationForm');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                if (form.checkValidity()) {
+                    showSpinner();
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", form.action, true);
+                    xhr.onload = function() {
+                        hideSpinner();
+                        if (xhr.status === 200) {
+                            showMessage('Formulier succesvol ingediend', 'success');
+                        } else {
+                            showMessage('Formulier indiening mislukt', 'error');
+                        }
+                    };
+                    xhr.onerror = function() {
+                        hideSpinner();
+                        showMessage('Er is een fout opgetreden bij het indienen van het formulier', 'error');
+                    };
+                    xhr.send(new FormData(form));
+                } else {
+                    showMessage('Vul alle verplichte velden in.', 'error');
+                }
+            });
+        }
+
+        function showSpinner() {
+            spinner.style.display = 'block';
+        }
+
+        function hideSpinner() {
+            spinner.style.display = 'none';
+        }
+
+        function showMessage(msg, type) {
+            message.textContent = msg;
+            message.className = type;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
+</body>
+</html>

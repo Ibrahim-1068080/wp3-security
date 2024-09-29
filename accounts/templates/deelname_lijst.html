@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    function fetch_data(){
+        $.ajax({
+            url: "{% url 'deelname_lijst' %}",
+            success: function(data) {
+                var newBody = $('<div>').html(data).find('table.deelnamelijst tbody');
+                $('table.deelnamelijst tbody').replaceWith(newBody);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+    fetch_data();
+    setInterval(fetch_data,5000);
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Deelname Lijst</h1>
+<table class="deelnamelijst">
+    <thead>
+        <tr>
+            <th>Onderzoek</th>
+            <th>Gebruiker</th>
+            <th>Datum deelname</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for deelname in deelnames %}
+            <tr>
+                <td>{{ deelname.onderzoek.titel }}</td>
+                <td>{{ deelname.gebruiker.username }}</td>
+                <td>{{ deelname.datum_deelname }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">No deelnames yet.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'onderzoek_list' %}" class="btn btn-primary">Terug</a>
+{% endblock %}

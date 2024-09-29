@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Profiel bewerken{% endblock %}
+{% block content %}
+    <h2>Profiel</h2>
+    {% if user.organisatie.api_key %}
+    <p>Your API Key: {{ user.organisatie.api_key }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Opslaan</button>
+    </form>
+{% endblock %}

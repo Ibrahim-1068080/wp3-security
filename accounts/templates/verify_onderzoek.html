@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+<h1>Onderzoek Details</h1>
+
+<table class="deelnamelijst">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Beschrijving</th>
+            <th>Datum Vanaf</th>
+            <th>Datum Tot</th>
+            <th>Type Onderzoek</th>
+            <th>Is Verified</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for onderzoek in onderzoeken %}
+            <tr>
+                <td>{{ onderzoek.titel }}</td>
+                <td>{{ onderzoek.beschrijving }}</td>
+                <td>{{ onderzoek.datum_vanaf|date:"Y-m-d" }}</td>
+                <td>{{ onderzoek.datum_tot|date:"Y-m-d" }}</td>
+                <td>{{ onderzoek.type_onderzoek }}</td>
+                <td>{{ onderzoek.is_verified }}</td>
+                <td>
+                    {% if not onderzoek.is_verified %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="onderzoek_id" value="{{ onderzoek.id }}">
+                        <button type="submit" class="button" onclick="verifyMessage()">Verify</button>
+
+                        <script>
+                        function verifyMessage() {
+                            alert("u heeft dit onderzoek geverifieerd en hij is nu zichtbaar voor deelnemers");
+                        }
+                        </script>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

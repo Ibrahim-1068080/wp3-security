@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Inloggen{% endblock %}
+
+{% block content %}
+
+<head>
+{% load static %}
+<img src="{% static 'images/logo_accessibility.jpg' %}" alt="Login Image" class="login-image">
+<style>
+.card {
+    transition: opacity 2s;
+    opacity: 0;
+}
+</style>
+</head>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mt-5">
+            <h2 class="card-header">Inloggen</h2>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <label for="showPassword">Toon Wachtwoord:</label>
+                    <input type="checkbox" id="showPassword">
+                    <button type="submit" class="btn btn-primary">Inloggen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function () {
+            this.style.borderColor = '#007bff';
+            this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.8)';
+        });
+        input.addEventListener('blur', function () {
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+        });
+    });
+
+    const passwordField = document.querySelector('input[type=password]');
+    const showPasswordCheckbox = document.querySelector('#showPassword');
+
+    // Wachtwoord zichtbaarheid toggling
+    showPasswordCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            passwordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+        }
+    });
+
+    const card = document.querySelector('.card');
+    card.style.opacity = 0;
+    setTimeout(() => {
+        card.style.transition = 'opacity 2s';
+        card.style.opacity = 1;
+    }, 100);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordField = document.querySelector('#id_password');
+    const showPasswordCheckbox = document.querySelector('#showPassword');
+
+    showPasswordCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            passwordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+        }
+    });
+});
+</script>
+{% endblock %}

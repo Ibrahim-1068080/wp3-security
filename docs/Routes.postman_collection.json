@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "6f0038fd-8255-400e-b9fb-de9eb91a0535",
+		"name": "Routes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33831387"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "GET",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/onderzoeken/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"onderzoeken",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 24 Mar 2024 22:15:28 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.12.2"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "409"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"titel\": \"Voorbeeldtitel van het Onderzoek\",\n        \"beschrijving\": \"Dit is een gedetailleerde beschrijving van het onderzoek.\",\n        \"startdatum\": \"2024-03-01\",\n        \"einddatum\": \"2024-03-31\",\n        \"criteria\": \"Specifieke criteria voor het onderzoek\",\n        \"status\": \"nieuw\",\n        \"type_onderzoek\": \"telefonisch\",\n        \"doelgroep_leeftijd_van\": null,\n        \"doelgroep_leeftijd_tot\": null,\n        \"doelgroep_beperking\": \"\",\n        \"met_beloning\": false,\n        \"beloning_details\": null\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/onderzoeken/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"onderzoeken",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 24 Mar 2024 22:15:47 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.12.2"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "409"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"titel\": \"Voorbeeldtitel van het Onderzoek\",\n        \"beschrijving\": \"Dit is een gedetailleerde beschrijving van het onderzoek.\",\n        \"startdatum\": \"2024-03-01\",\n        \"einddatum\": \"2024-03-31\",\n        \"criteria\": \"Specifieke criteria voor het onderzoek\",\n        \"status\": \"nieuw\",\n        \"type_onderzoek\": \"telefonisch\",\n        \"doelgroep_leeftijd_van\": null,\n        \"doelgroep_leeftijd_tot\": null,\n        \"doelgroep_beperking\": \"\",\n        \"met_beloning\": false,\n        \"beloning_details\": null\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/onderzoeken/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"onderzoeken",
+								""
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 24 Mar 2024 22:16:06 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.12.2"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "185"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"titel\": [\n        \"Dit veld is vereist.\"\n    ],\n    \"beschrijving\": [\n        \"Dit veld is vereist.\"\n    ],\n    \"startdatum\": [\n        \"Dit veld is vereist.\"\n    ],\n    \"einddatum\": [\n        \"Dit veld is vereist.\"\n    ],\n    \"criteria\": [\n        \"Dit veld is vereist.\"\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "http://localhost:8000/api/onderzoeken/",
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/onderzoeken/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"onderzoeken",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

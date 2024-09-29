@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>Beschikbare Onderzoeksstudies</h2>
+    <ul id="onderzoekenList">
+    </ul>
+</div>
+<div>
+    <h2>Dien een nieuwe onderzoeksstudie in</h2>
+    <form id="onderzoekForm">
+        <label for="titel">Titel:</label>
+        <input type="text" id="titel" name="titel" required><br>
+        
+        <label for="beschrijving">Beschrijving:</label>
+        <textarea id="beschrijving" name="beschrijving" required></textarea><br>
+        
+        <label for="startdatum">Startdatum:</label>
+        <input type="date" id="startdatum" name="startdatum" required><br>
+        
+        <label for="einddatum">Einddatum:</label>
+        <input type="date" id="einddatum" name="einddatum" required><br>
+        
+        <label for="criteria">Criteria:</label>
+        <textarea id="criteria" name="criteria" required></textarea><br>
+
+        <label for="met_beloning">Met beloning:</label>
+        <input type="checkbox" id="met_beloning" name="met_beloning"><br>
+
+        <label for="beloning_details">Details van de beloning:</label>
+        <textarea id="beloning_details" name="beloning_details"></textarea><br>
+        
+        <button type="submit">Indienen</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetchOnderzoeken();
+
+    document.getElementById('onderzoekForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = {
+            titel: document.getElementById('titel').value,
+            beschrijving: document.getElementById('beschrijving').value,
+            startdatum: document.getElementById('startdatum').value,
+            einddatum: document.getElementById('einddatum').value,
+            criteria: document.getElementById('criteria').value,
+            met_beloning: document.getElementById('met_beloning').checked,
+            beloning_details: document.getElementById('beloning_details').value,
+        };
+        
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch('/api/onderzoeken/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            fetchOnderzoeken();
+        })
+        .catch(error => console.error('Fout:', error));
+    });
+});
+
+function fetchOnderzoeken() {
+    fetch('/api/onderzoeken/')
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('onderzoekenList');
+            list.innerHTML = '';
+            data.forEach(onderzoek => {
+                const item = document.createElement('li');
+                item.innerHTML = `<strong>${onderzoek.titel}</strong>: ${onderzoek.beschrijving
+
+</script>
+
+{% endblock %}

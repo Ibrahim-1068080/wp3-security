@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    function fetch_data(){
+        $.ajax({
+            url: "{% url 'onderzoek_list' %}",
+            success: function(data) {
+                var newBody = $('<div>').html(data).find('table.table tbody');
+                $('table.table tbody').replaceWith(newBody);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+    fetch_data();
+    setInterval(fetch_data,5000);
+
+    $("a").on('click', function(event) {
+        if (this.hash !== "") {
+            event.preventDefault();
+            var hash = this.hash;
+            $('html, body').animate({
+                scrollTop: $(hash).offset().top
+            }, 800, function(){
+                window.location.hash = hash;
+            });
+        }
+    });
+});
+
+document.querySelectorAll('.button').forEach(button => {
+    button.addEventListener('click', function(e) {
+        let x = e.clientX - e.target.offsetLeft;
+        let y = e.clientY - e.target.offsetTop;
+
+        let ripples = document.createElement('span');
+        ripples.style.left = x + 'px';
+        ripples.style.top = y + 'px';
+        this.appendChild(ripples);
+
+        setTimeout(() => {
+            ripples.remove();
+        }, 1000);
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<h1>Onderzoeken</h1>
+<table class="deelnamelijst">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Status</th>
+            <th>Beschrijving</th>
+            <th>Startdatum</th>
+            <th>Einddatum</th>
+            <th>Type</th>
+            <th>Met beloning</th>
+            <th>Beloning</th>
+            <th>Leeftijd van</th>
+            <th>Leeftijd tot</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for onderzoek in onderzoek_lijst %}
+            {% if onderzoek.is_verified %}
+                <tr>
+                    <td>{{ onderzoek.titel }}</td>
+                    <td>{{ onderzoek.status }}</td>
+                    <td>{{ onderzoek.beschrijving }}</td>
+                    <td>{{ onderzoek.datum_vanaf|date:"Y-m-d" }}</td>
+                    <td>{{ onderzoek.datum_tot|date:"Y-m-d" }}</td>
+                    <td>{{ onderzoek.type_onderzoek }}</td>
+                    <td>{% if onderzoek.met_beloning %}Ja{% else %}Nee{% endif %}</td>
+                    <td>{{ onderzoek.beloning }}</td>
+                    <td>{{ onderzoek.leeftijd_van }}</td>
+                    <td>{{ onderzoek.leeftijd_tot }}</td>
+                    <td>
+                        <a href="{% url 'deelnemen_view' onderzoek.id %}" class="button" onclick="participationMessage()">Deelnemen</a>
+
+                        <script>
+                        function participationMessage() {
+                            alert("U heeft nu deelgenomen aan deze onderzoek, al ingeschreven? Dan ontvangt u zo snel mogelijk informatie van de onderzoeker.");
+                        }
+                        </script>                        
+                        <div id="result-icon"></div>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="feedback-link">
+    <a href="{% url 'feedback' %}" class="button">Geef Feedback</a>
+    {% if request.user.organisatie %}
+    <a href="{% url 'deelname_lijst' %}" class="button">Deelnames zien</a>
+    <a href="{% url 'verify_onderzoek' %}" class="button">Onderzoek verifiëren</a></div>
+    {% endif %}
+{% endblock %}

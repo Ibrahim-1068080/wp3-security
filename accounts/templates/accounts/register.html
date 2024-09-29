@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block title %}Registreren{% endblock %}
+
+{% block content %}
+<h2>Registreer</h2>
+
+<form method="post" id="registrationForm" style="color: white; background-color: darkblue; padding: 20px; border-radius: 10px; border: 1px solid #ccc; max-width: 600px; margin: 20px auto;">
+    {% csrf_token %}
+
+    <label for="id_username">Gebruikersnaam:</label>
+    <input type="text" name="username" id="id_username" maxlength="150" required>
+
+    <label for="id_email">E-mailadres:</label>
+    <input type="email" name="email" id="id_email" required>
+
+    <label for="id_password1">Wachtwoord:</label>
+    <input type="password" name="password1" id="id_password1" required>
+
+    <label for="id_password2">Bevestig Wachtwoord:</label>
+    <input type="password" name="password2" id="id_password2" required>
+
+    <label for="id_voornaam">Voornaam:</label>
+    <input type="text" name="voornaam" id="id_voornaam" required>
+
+    <label for="id_achternaam">Achternaam:</label>
+    <input type="text" name="achternaam" id="id_achternaam" required>
+
+    <label for="id_postcode">Postcode:</label>
+    <input type="text" name="postcode" id="id_postcode" maxlength="6" required>
+
+    <label for="id_geslacht">Geslacht:</label>
+    <select name="geslacht" id="id_geslacht" required>
+        {% for value, label in form.fields.geslacht.choices %}
+        <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="id_telefoonnummer">Telefoonnummer:</label>
+    <input type="text" name="telefoonnummer" id="id_telefoonnummer" maxlength="15" required>
+
+    <label for="id_geboortedatum">Geboortedatum:</label>
+    <input type="date" name="geboortedatum" id="id_geboortedatum" required>
+
+    <div id="voogdContainer" style="display: none;">
+        <label for="id_voogd">Heeft Voogd:</label>
+        <input type="checkbox" name="voogd" id="id_voogd" disabled>
+    </div>
+
+    <div id="voogdFields" style="display: none;">
+        <label for="id_naam_voogd">Naam Voogd:</label>
+        <input type="text" name="naam_voogd" id="id_naam_voogd">
+
+        <label for="id_email_voogd">E-mailadres Voogd:</label>
+        <input type="email" name="email_voogd" id="id_email_voogd">
+
+        <label for="id_telefoonnummer_voogd">Telefoonnummer Voogd:</label>
+        <input type="text" name="telefoonnummer_voogd" id="id_telefoonnummer_voogd">
+    </div>
+
+    <label for="id_voorkeur_benadering">Voorkeur Benadering:</label>
+    <select name="voorkeur_benadering" id="id_voorkeur_benadering" required>
+        {% for value, label in form.fields.voorkeur_benadering.choices %}
+        <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="id_type_onderzoek">Type Onderzoek:</label>
+    <select name="type_onderzoek" id="id_type_onderzoek" required>
+        {% for value, label in form.fields.type_onderzoek.choices %}
+        <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="id_bijzonderheden_beschikbaarheid">Bijzonderheden Beschikbaarheid:</label>
+    <textarea name="bijzonderheden_beschikbaarheid" id="id_bijzonderheden_beschikbaarheid"></textarea>
+
+    <button type="submit" class="button">Submit</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const voogdCheckbox = document.getElementById('id_voogd');
+        const voogdContainer = document.getElementById('voogdContainer');
+        const voogdFields = document.getElementById('voogdFields');
+        const geboortedatumField = document.getElementById('id_geboortedatum');
+        const naamVoogd = document.getElementById('id_naam_voogd');
+        const emailVoogd = document.getElementById('id_email_voogd');
+        const telefoonnummerVoogd = document.getElementById('id_telefoonnummer_voogd');
+
+        function checkUnderage() {
+            const geboortedatum = new Date(geboortedatumField.value);
+            const today = new Date();
+            let age = today.getFullYear() - geboortedatum.getFullYear();
+            const m = today.getMonth() - geboortedatum.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < geboortedatum.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                voogdContainer.style.display = 'block';
+                voogdCheckbox.checked = true;
+                voogdCheckbox.disabled = true;
+                voogdFields.style.display = 'block';
+                naamVoogd.setAttribute('required', 'required');
+                emailVoogd.setAttribute('required', 'required');
+                telefoonnummerVoogd.setAttribute('required', 'required');
+            } else {
+                voogdContainer.style.display = 'none';
+                voogdFields.style.display = 'none';
+                voogdCheckbox.checked = false;
+                voogdCheckbox.disabled = false;
+                naamVoogd.removeAttribute('required');
+                emailVoogd.removeAttribute('required');
+                telefoonnummerVoogd.removeAttribute('required');
+            }
+        }
+
+        geboortedatumField.addEventListener('change', checkUnderage);
+
+        const form = document.getElementById('registrationForm');
+        const username = document.getElementById('id_username');
+        const email = document.getElementById('id_email');
+        const password = document.getElementById('id_password1');
+        const confirmPassword = document.getElementById('id_password2');
+
+        username.addEventListener('input', validateUsername);
+        email.addEventListener('input', validateEmail);
+        password.addEventListener('input', validatePassword);
+        confirmPassword.addEventListener('input', validateConfirmPassword);
+
+        function validateUsername() {
+            const value = username.value;
+            if (value.length < 3) {
+                username.setCustomValidity("Gebruikersnaam moet minstens 3 karakters lang zijn");
+            } else {
+                username.setCustomValidity('');
+            }
+        }
+
+        function validateEmail() {
+            const value = email.value;
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!re.test(String(value).toLowerCase())) {
+                email.setCustomValidity("Ongeldig e-mailadres");
+            } else {
+                email.setCustomValidity('');
+            }
+        }
+
+        function validatePassword() {
+            const value = password.value;
+            if (value.length < 8) {
+                password.setCustomValidity("Wachtwoord moet minstens 8 karakters lang zijn");
+            } else {
+                password.setCustomValidity('');
+            }
+        }
+
+        function validateConfirmPassword() {
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity("Wachtwoorden komen niet overeen");
+            } else {
+                confirmPassword.setCustomValidity('');
+            }
+        }
+
+        form.addEventListener('submit', function(event) {
+            if (voogdCheckbox.checked) {
+                if (!naamVoogd.value || !emailVoogd.value || !telefoonnummerVoogd.value) {
+                    event.preventDefault();
+                    alert("Voogd details zijn verplicht voor minderjarigen.");
+                    return false;
+                }
+            }
+
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                alert("Controleer de formulier voor fouten");
+            }
+        });
+    });
+
+    function validateTelefoonnummer() {
+    const telefoonnummer = document.getElementById('id_telefoonnummer');
+    const value = telefoonnummer.value;
+    const length = value.length;
+
+    if (length !== 10) {
+        telefoonnummer.setCustomValidity("Telefoonnummer moet precies 10 cijfers hebben");
+    } else {
+        telefoonnummer.setCustomValidity('');
+    }
+}
+
+
+const telefoonnummer = document.getElementById('id_telefoonnummer');
+telefoonnummer.addEventListener('input', validateTelefoonnummer);
+
+function validateName(input) {
+    const value = input.value;
+    const re = /^[a-zA-Z\s]*$/;
+    if (!re.test(value)) {
+        input.setCustomValidity("Voer een geldige naam in");
+    } else {
+        input.setCustomValidity('');
+    }
+}
+
+
+const voornaam = document.getElementById('id_voornaam');
+const achternaam = document.getElementById('id_achternaam');
+voornaam.addEventListener('input', function() { validateName(voornaam); });
+achternaam.addEventListener('input', function() { validateName(achternaam); });
+
+function validatePostcode() {
+    const postcode = document.getElementById('id_postcode');
+    const value = postcode.value;
+    const re = /^[0-9]{4}[a-zA-Z]{2}$/;
+    if (!re.test(value)) {
+        postcode.setCustomValidity("Voer een geldige postcode in (4 cijfers gevolgd door 2 letters)");
+    } else {
+        postcode.setCustomValidity('');
+    }
+}
+
+
+const postcode = document.getElementById('id_postcode');
+postcode.addEventListener('input', validatePostcode);
+</script>
+{% endblock %}

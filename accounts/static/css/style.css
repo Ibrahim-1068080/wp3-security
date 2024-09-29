@@ -1,0 +1,123 @@
+h2 {
+  text-align: center;
+  margin-top: 10px;
+  padding: 10px 40px;;
+  color: white;
+  background-color: darkblue;
+  border-radius: 10px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: darkblue;
+}
+
+
+
+label, input, select, textarea {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;: black
+}
+
+label {
+    color: white;
+    background-color: transparent;
+}
+
+.button {
+    background-color: darkblue;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: royalblue;
+    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+    color: white;
+    transform: translateY(-7px);
+}
+.errorlist {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.feedback-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+}
+.feedback-form h1 {
+    text-align: center;
+}
+.feedback-form form {
+    display: flex;
+    flex-direction: column;
+}
+.feedback-form form > * {
+    margin: 10px 0;
+}
+.feedback-form button {
+    cursor: pointer;
+    background-color: midnightblue;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.feedback-form .custom-btn:hover {
+    background-color: midnightblue;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+
+
+.custom-navbar {
+    background-color: darkblue;
+    color: white !important;
+}
+
+.deelnamelijst {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.deelnamelijst th,
+.deelnamelijst td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.deelnamelijst tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.deelnamelijst th {
+    background-color: darkblue;
+    color: white;
+}
