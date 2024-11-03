@@ -65,6 +65,6 @@ traitlets==5.14.2
 typing_extensions==4.10.0
 urllib3==2.2.0
 wcwidth==0.2.13
-Werkzeug==3.0.1
+Werkzeug==3.0.6
 WTForms==3.1.2
 yalm==0.0.2a7
