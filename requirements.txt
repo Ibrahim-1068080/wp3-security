@@ -52,7 +52,7 @@ pytz==2024.1
 PyYAML==6.0.1
 pyzmq==25.1.2
 regex==2021.11.10
-requests==2.31.0
+requests==2.32.4
 six==1.16.0
 soupsieve==2.5
 SQLAlchemy==2.0.28
